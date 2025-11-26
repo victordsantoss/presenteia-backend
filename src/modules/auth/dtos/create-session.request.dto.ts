@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsDate, IsBoolean, IsOptional, IsEnum } from 'class-validator';
 import { Type } from 'class-transformer';
-import { ConnectionType } from '../../../common/enums/connection-type.enum';
+import { ConnectionType } from '../../../common/enums';
 
 export class CreateSessionRequestDto {
   @ApiProperty({

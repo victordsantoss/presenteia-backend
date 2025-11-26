@@ -24,6 +24,8 @@ model User {
   deletedAt     DateTime?      @db.Timestamp(6)
   roleId        String?
   sessions      Session[]
+  organizedEvents Event[]      @relation("EventOrganizer")
+  reservations    Reservation[]
   role          Role?          @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
@@ -56,4 +58,103 @@ enum RoleTypes {
   GUEST   @map("GUEST")
 }
 
+enum EventVisibility {
+  PUBLIC  @map("PUBLIC")
+  PRIVATE @map("PRIVATE")
+}
+
+enum GiftPriority {
+  LOW    @map("LOW")
+  MEDIUM @map("MEDIUM")
+  HIGH   @map("HIGH")
+}
+
+enum ReservationStatus {
+  PENDING   @map("PENDING")
+  CONFIRMED @map("CONFIRMED")
+  CANCELLED @map("CANCELLED")
+  DELIVERED @map("DELIVERED")
+}
+
+enum InvitationStatus {
+  PENDING  @map("PENDING")
+  ACCEPTED @map("ACCEPTED")
+  DECLINED @map("DECLINED")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @db.VarChar(100)
+  description String?  @db.Text
+  icon        String?  @db.VarChar(50)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime @default(now()) @db.Timestamp(6)
+  gifts       Gift[]
+}
+
+model Event {
+  id          String          @id @default(cuid())
+  title       String          @db.VarChar(255)
+  description String?         @db.Text
+  eventDate   DateTime        @db.Timestamp(6)
+  location    String?         @db.VarChar(500)
+  visibility  EventVisibility @default(PUBLIC)
+  slug        String          @unique @db.VarChar(255)
+  organizerId String
+  isActive    Boolean         @default(true)
+  createdAt   DateTime        @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime        @default(now()) @db.Timestamp(6)
+  deletedAt   DateTime?       @db.Timestamp(6)
+  organizer   User            @relation("EventOrganizer", fields: [organizerId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  gifts       Gift[]
+  invitations Invitation[]
+}
+
+model Gift {
+  id                        String       @id @default(cuid())
+  name                      String       @db.VarChar(255)
+  description               String?      @db.Text
+  price                     Decimal      @db.Decimal(10, 2)
+  quantity                  Int          @default(1)
+  imageUrl                  String?      @db.VarChar(500)
+  allowMultipleContributions Boolean     @default(false)
+  priority                  GiftPriority @default(MEDIUM)
+  categoryId                String?
+  eventId                   String
+  isActive                  Boolean      @default(true)
+  createdAt                 DateTime     @default(now()) @db.Timestamp(6)
+  updatedAt                 DateTime     @default(now()) @db.Timestamp(6)
+  deletedAt                 DateTime?    @db.Timestamp(6)
+  category                  Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  event                     Event        @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  reservations              Reservation[]
+}
+
+model Reservation {
+  id                 String            @id @default(cuid())
+  giftId             String
+  userId             String
+  contributionAmount Decimal           @db.Decimal(10, 2)
+  status             ReservationStatus @default(PENDING)
+  message            String?           @db.Text
+  reservedAt         DateTime          @default(now()) @db.Timestamp(6)
+  confirmedAt        DateTime?         @db.Timestamp(6)
+  deliveredAt        DateTime?         @db.Timestamp(6)
+  gift               Gift              @relation(fields: [giftId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model Invitation {
+  id          String           @id @default(cuid())
+  eventId     String
+  guestEmail  String           @db.VarChar(255)
+  guestName   String?          @db.VarChar(255)
+  status      InvitationStatus @default(PENDING)
+  invitedAt   DateTime         @default(now()) @db.Timestamp(6)
+  respondedAt DateTime?        @db.Timestamp(6)
+  event       Event            @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([eventId, guestEmail])
+}
 

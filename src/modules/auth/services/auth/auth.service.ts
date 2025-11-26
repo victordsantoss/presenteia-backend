@@ -13,7 +13,7 @@ import type { Cache } from 'cache-manager';
 import type { ISessionRepository } from '../../repositories/session.repository.interface';
 import type { IAuthenticatedUserRequestDto } from '../../../../common/dtos/auth.request.dto';
 import type { User } from '@prisma/client';
-import { ConnectionType } from '../../../../common/enums/connection-type.enum';
+import { ConnectionType } from '../../../../common/enums';
 
 @Injectable()
 export class AuthService implements IAuthService {
