@@ -6,11 +6,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import type { IAuthService } from './auth.interface';
-import type { IUserRepository } from '../../../user/repositories/user.repository.interface';
+import type { IUserRepository } from '../../../user/repositories/user.interface';
 import type { IPasswordService } from '../password/password.interface';
 import { JwtService } from '@nestjs/jwt';
 import type { Cache } from 'cache-manager';
-import type { ISessionRepository } from '../../repositories/session.repository.interface';
+import type { ISessionRepository } from '../../repositories/session.interface';
 import type { IAuthenticatedUserRequestDto } from '../../../../common/dtos/auth.request.dto';
 import type { User } from '@prisma/client';
 import { ConnectionType } from '../../../../common/enums';

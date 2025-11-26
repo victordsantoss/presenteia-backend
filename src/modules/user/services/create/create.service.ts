@@ -4,12 +4,12 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import type { IRegisterUserRequestDto } from '../../dtos/register-user.request.dto';
-import type { IUserRepository } from '../../repositories/user.repository.interface';
+import type { ICreateUserRequestDto } from '../../dtos/create-user.request.dto';
+import type { IUserRepository } from '../../repositories/user.interface';
 import type { IUserResponseDto } from '../../dtos/user.response.dto';
 import { User, RoleTypes } from '@prisma/client';
-import type { IRegisterUserService } from './register.interface';
-import type { IGetRoleService } from 'src/modules/access-control/services/role/get-role/get-role.service.interface';
+import type { ICreateUserService } from './create.interface';
+import type { IGetRoleService } from 'src/modules/access-control/services/role/get-role/get-role.interface';
 import type { IPasswordService } from 'src/modules/auth/services/password/password.interface';
 
 type CreateUserPayload = {
@@ -21,8 +21,8 @@ type CreateUserPayload = {
 };
 
 @Injectable()
-export class RegisterUserService implements IRegisterUserService {
-  private readonly logger = new Logger(RegisterUserService.name);
+export class CreateUserService implements ICreateUserService {
+  private readonly logger = new Logger(CreateUserService.name);
   private readonly _emailField: keyof User = 'email';
   private readonly _cpfField: keyof User = 'cpf';
 
@@ -35,8 +35,8 @@ export class RegisterUserService implements IRegisterUserService {
     private readonly getRoleService: IGetRoleService,
   ) {}
 
-  async perform(userData: IRegisterUserRequestDto): Promise<IUserResponseDto> {
-    this.logger.log(`Iniciando processo de registro de usuário`);
+  async perform(userData: ICreateUserRequestDto): Promise<IUserResponseDto> {
+    this.logger.log(`Iniciando processo de criação de usuário`);
     await this.findUserByEmail(userData.email);
     await this.findUserByCpf(userData.cpf);
 

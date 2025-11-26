@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import type { IGetRoleService } from './get-role.service.interface';
+import type { IGetRoleService } from './get-role.interface';
 import type { RoleTypes, Role } from '@prisma/client';
-import type { IRoleRepository } from '../../../repositories/role/role.repository.interface';
+import type { IRoleRepository } from '../../../repositories/role/role.interface';
 
 @Injectable()
 export class GetRoleService implements IGetRoleService {

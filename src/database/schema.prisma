@@ -9,24 +9,23 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-
 model User {
-  id            String         @id @default(cuid())
-  name          String         @db.VarChar(255)
-  email         String         @db.VarChar(255)
-  cpf           String         @db.VarChar(14)
-  password      String         @db.VarChar(255)
-  isActive      Boolean        @default(true)
-  provider      String         @default("LOCAL") @db.VarChar
-  birthDate     DateTime?      @db.Date
-  createdAt     DateTime       @default(now()) @db.Timestamp(6)
-  updatedAt     DateTime       @default(now()) @db.Timestamp(6)
-  deletedAt     DateTime?      @db.Timestamp(6)
-  roleId        String?
-  sessions      Session[]
-  organizedEvents Event[]      @relation("EventOrganizer")
+  id              String        @id @default(cuid())
+  name            String        @db.VarChar(255)
+  email           String        @db.VarChar(255)
+  cpf             String        @db.VarChar(14)
+  password        String        @db.VarChar(255)
+  isActive        Boolean       @default(true)
+  provider        String        @default("LOCAL") @db.VarChar
+  birthDate       DateTime?     @db.Date
+  createdAt       DateTime      @default(now()) @db.Timestamp(6)
+  updatedAt       DateTime      @default(now()) @db.Timestamp(6)
+  deletedAt       DateTime?     @db.Timestamp(6)
+  roleId          String?
+  sessions        Session[]
+  organizedEvents Event[]       @relation("EventOrganizer")
   reservations    Reservation[]
-  role          Role?          @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  role            Role?         @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Role {
@@ -112,29 +111,33 @@ model Event {
 }
 
 model Gift {
-  id                        String       @id @default(cuid())
-  name                      String       @db.VarChar(255)
-  description               String?      @db.Text
-  price                     Decimal      @db.Decimal(10, 2)
-  quantity                  Int          @default(1)
-  imageUrl                  String?      @db.VarChar(500)
-  allowMultipleContributions Boolean     @default(false)
-  priority                  GiftPriority @default(MEDIUM)
-  categoryId                String?
-  eventId                   String
-  isActive                  Boolean      @default(true)
-  createdAt                 DateTime     @default(now()) @db.Timestamp(6)
-  updatedAt                 DateTime     @default(now()) @db.Timestamp(6)
-  deletedAt                 DateTime?    @db.Timestamp(6)
-  category                  Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: NoAction)
-  event                     Event        @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  reservations              Reservation[]
+  id                         String       @id @default(cuid())
+  name                       String       @db.VarChar(255)
+  description                String?      @db.Text
+  price                      Decimal      @db.Decimal(10, 2)
+  quantity                   Int          @default(1)
+  imageUrl                   String?      @db.VarChar(500)
+  allowMultipleContributions Boolean      @default(false)
+  priority                   GiftPriority @default(MEDIUM)
+  categoryId                 String?
+  eventId                    String
+  isActive                   Boolean      @default(true)
+  createdAt                  DateTime     @default(now()) @db.Timestamp(6)
+  updatedAt                  DateTime     @default(now()) @db.Timestamp(6)
+  deletedAt                  DateTime?    @db.Timestamp(6)
+  category                   Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  event                      Event        @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  reservations               Reservation[]
 }
 
 model Reservation {
   id                 String            @id @default(cuid())
   giftId             String
-  userId             String
+  userId             String?
+  guestName          String?           @db.VarChar(255)
+  guestEmail         String?           @db.VarChar(255)
+  guestPhone         String?           @db.VarChar(20)
+  guestToken         String?           @unique @db.VarChar(255)
   contributionAmount Decimal           @db.Decimal(10, 2)
   status             ReservationStatus @default(PENDING)
   message            String?           @db.Text
@@ -142,7 +145,7 @@ model Reservation {
   confirmedAt        DateTime?         @db.Timestamp(6)
   deliveredAt        DateTime?         @db.Timestamp(6)
   gift               Gift              @relation(fields: [giftId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user               User?             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Invitation {
@@ -157,4 +160,3 @@ model Invitation {
 
   @@unique([eventId, guestEmail])
 }
-

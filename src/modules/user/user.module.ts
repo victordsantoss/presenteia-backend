@@ -3,7 +3,7 @@ import { UserController } from './controllers/user.controller';
 import { UserRepository } from './repositories/user.repository';
 import { CommonModule } from '../../common/common.module';
 import { PrismaModule } from '../../database/database.module';
-import { RegisterUserService } from './services/register/register.service';
+import { CreateUserService } from './services/create/create.service';
 import { AccessControlModule } from '../access-control/access-control.module';
 import { AuthModule } from '../auth/auth.module';
 @Module({
@@ -11,14 +11,14 @@ import { AuthModule } from '../auth/auth.module';
   controllers: [UserController],
   providers: [
     {
-      provide: 'IRegisterUserService',
-      useClass: RegisterUserService,
+      provide: 'ICreateUserService',
+      useClass: CreateUserService,
     },
     {
       provide: 'IUserRepository',
       useClass: UserRepository,
     },
   ],
-  exports: ['IRegisterUserService', 'IUserRepository'],
+  exports: ['ICreateUserService', 'IUserRepository'],
 })
 export class UserModule {}

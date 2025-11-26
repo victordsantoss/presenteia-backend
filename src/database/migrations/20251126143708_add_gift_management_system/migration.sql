@@ -65,7 +65,11 @@ CREATE TABLE "Gift" (
 CREATE TABLE "Reservation" (
     "id" TEXT NOT NULL,
     "giftId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userId" TEXT,
+    "guestName" VARCHAR(255),
+    "guestEmail" VARCHAR(255),
+    "guestPhone" VARCHAR(20),
+    "guestToken" VARCHAR(255),
     "contributionAmount" DECIMAL(10,2) NOT NULL,
     "status" "ReservationStatus" NOT NULL DEFAULT 'PENDING',
     "message" TEXT,
@@ -91,6 +95,9 @@ CREATE TABLE "Invitation" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Event_slug_key" ON "Event"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Reservation_guestToken_key" ON "Reservation"("guestToken");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Invitation_eventId_guestEmail_key" ON "Invitation"("eventId", "guestEmail");

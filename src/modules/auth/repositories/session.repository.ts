@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { BaseRepository } from '../../../common/repositories/base.repository';
-import type { ISessionRepository } from './session.repository.interface';
+import type { ISessionRepository } from './session.interface';
 import type { Session } from '@prisma/client';
 import type { GetAuthenticatedUserResponseDto } from '../dtos/get-user.response.dto';
 import { PrismaService } from '../../../database/core/prisma.service';

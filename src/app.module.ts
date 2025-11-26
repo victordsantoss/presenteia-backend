@@ -5,6 +5,7 @@ import { CommonModule } from './common/common.module';
 import { AccessControlModule } from './modules/access-control/access-control.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { EventModule } from './modules/event/event.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AuthModule } from './modules/auth/auth.module';
     AccessControlModule,
     UserModule,
     AuthModule,
+    EventModule,
   ],
 })
 export class AppModule {}

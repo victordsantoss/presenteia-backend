@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsEmail, Length } from 'class-validator';
 
-export class IRegisterUserRequestDto {
+export class ICreateUserRequestDto {
   @ApiProperty({
     description: 'Nome do usuário',
   })
@@ -28,3 +28,4 @@ export class IRegisterUserRequestDto {
   @Length(8, 255)
   password: string;
 }
+

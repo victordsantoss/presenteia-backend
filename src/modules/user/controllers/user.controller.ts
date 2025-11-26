@@ -2,29 +2,29 @@ import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common';
 
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CpfGuard } from '../../../common/guards/cpf.guard';
-import { IRegisterUserRequestDto } from '../dtos/register-user.request.dto';
+import { ICreateUserRequestDto } from '../dtos/create-user.request.dto';
 import { IUserResponseDto } from '../dtos/user.response.dto';
-import type { IRegisterUserService } from '../services/register/register.interface';
+import type { ICreateUserService } from '../services/create/create.interface';
 
 @Controller('user')
 export class UserController {
   constructor(
-    @Inject('IRegisterUserService')
-    private readonly registerUserService: IRegisterUserService,
+    @Inject('ICreateUserService')
+    private readonly createUserService: ICreateUserService,
   ) {}
 
   @Post()
-  @ApiOperation({ summary: 'Registrar um novo usuário' })
-  @ApiResponse({ status: 201, description: 'Usuário registrado com sucesso.' })
+  @ApiOperation({ summary: 'Criar um novo usuário' })
+  @ApiResponse({ status: 201, description: 'Usuário criado com sucesso.' })
   @ApiResponse({ status: 400, description: 'Erro de validação.' })
   @ApiBody({
-    type: IRegisterUserRequestDto,
-    description: 'Dados de registro do usuário',
+    type: ICreateUserRequestDto,
+    description: 'Dados de criação do usuário',
   })
   @UseGuards(CpfGuard)
   async create(
-    @Body() userData: IRegisterUserRequestDto,
+    @Body() userData: ICreateUserRequestDto,
   ): Promise<IUserResponseDto> {
-    return await this.registerUserService.perform(userData);
+    return await this.createUserService.perform(userData);
   }
 }
