@@ -21,7 +21,7 @@ import type { ICreateEventService } from '../services/create/create.interface';
 import type { IGetEventService } from '../services/get/get.interface';
 import { JwtAuthGuard } from 'src/common/guards/auth.guard';
 
-@ApiTags('events')
+@ApiTags('Events')
 @Controller('events')
 export class EventController {
   constructor(

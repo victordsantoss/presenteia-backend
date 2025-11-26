@@ -18,14 +18,18 @@ import {
 import { JwtAuthGuard } from 'src/common/guards/auth.guard';
 import { CreateGiftDto } from '../dtos/create-gift.dto';
 import { GiftDto } from '../dtos/gift.dto';
+import { GiftWithAvailabilityDto } from '../dtos/gift-with-availability.dto';
 import type { ICreateGiftService } from '../services/create/create.interface';
+import type { IListGiftsByEventService } from '../services/list-by-event/list-by-event.interface';
 
-@ApiTags('gifts')
+@ApiTags('Gifts')
 @Controller('gifts')
 export class GiftController {
   constructor(
     @Inject('ICreateGiftService')
     private readonly createGiftService: ICreateGiftService,
+    @Inject('IListGiftsByEventService')
+    private readonly listGiftsByEventService: IListGiftsByEventService,
   ) {}
 
   @Post('events/:eventId')
@@ -51,4 +55,19 @@ export class GiftController {
   ): Promise<GiftDto> {
     return await this.createGiftService.perform(giftData, eventId);
   }
+
+  @Get('events/:eventId')
+  @ApiOperation({ summary: 'Listar presentes do evento com disponibilidade' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de presentes com informações de disponibilidade.',
+    type: [GiftWithAvailabilityDto],
+  })
+  @ApiResponse({ status: 404, description: 'Evento não encontrado.' })
+  async listByEvent(
+    @Param('eventId') eventId: string,
+  ): Promise<GiftWithAvailabilityDto[]> {
+    return await this.listGiftsByEventService.perform(eventId);
+  }
 }
+

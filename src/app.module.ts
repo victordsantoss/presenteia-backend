@@ -7,6 +7,7 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { EventModule } from './modules/event/event.module';
 import { GiftModule } from './modules/gift/gift.module';
+import { ReservationModule } from './modules/reservation/reservation.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { GiftModule } from './modules/gift/gift.module';
     AuthModule,
     EventModule,
     GiftModule,
+    ReservationModule,
   ],
 })
 export class AppModule {}

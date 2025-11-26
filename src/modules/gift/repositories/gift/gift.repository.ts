@@ -26,6 +26,13 @@ export class GiftRepository
               in: ['PENDING', 'CONFIRMED'],
             },
           },
+          include: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
         },
       },
       orderBy: [{ priority: 'desc' }, { createdAt: 'asc' }],
