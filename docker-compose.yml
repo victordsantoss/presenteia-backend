@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: presenteia_backend
+    ports:
+      - '3000:3000'
+    environment:
+      - DATABASE_HOST=database
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=presenteia_user_dev
+      - DATABASE_PASSWORD=presenteia_password_dev
+      - DATABASE_NAME=presenteia_db_dev
+      - DATABASE_URL=postgresql://presenteia_user_dev:presenteia_password_dev@database:5432/presenteia_db_dev
+      - DIRECT_URL=postgresql://presenteia_user_dev:presenteia_password_dev@database:5432/presenteia_db_dev
+      - JWT_SECRET=presenteia_jwt_secret_dev
+    depends_on:
+      - database
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev
+
+  database:
+    image: postgres:15
+    container_name: presenteia_postgres_db_dev 
+    environment:
+      POSTGRES_USER: presenteia_user_dev
+      POSTGRES_PASSWORD: presenteia_password_dev
+      POSTGRES_DB: presenteia_db_dev
+    healthcheck: 
+      interval: 10s
+      retries: 10
+      test: "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""
+      timeout: 2s
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
