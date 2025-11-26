@@ -6,6 +6,7 @@ import { AccessControlModule } from './modules/access-control/access-control.mod
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { EventModule } from './modules/event/event.module';
+import { GiftModule } from './modules/gift/gift.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { EventModule } from './modules/event/event.module';
     UserModule,
     AuthModule,
     EventModule,
+    GiftModule,
   ],
 })
 export class AppModule {}

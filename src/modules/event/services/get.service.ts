@@ -1,9 +1,4 @@
-import {
-  Inject,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import type { IGetEventService } from './get/get.interface';
 import type { EventDto } from '../dtos/event.dto';
 import type { IEventRepository } from '../repositories/event.interface';
@@ -52,4 +47,3 @@ export class GetEventService implements IGetEventService {
     };
   }
 }
-

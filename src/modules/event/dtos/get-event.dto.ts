@@ -9,4 +9,3 @@ export class GetEventDto {
   @IsString()
   slug: string;
 }
-

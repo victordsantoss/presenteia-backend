@@ -3,4 +3,3 @@ export enum InvitationStatus {
   ACCEPTED = 'ACCEPTED',
   DECLINED = 'DECLINED',
 }
-

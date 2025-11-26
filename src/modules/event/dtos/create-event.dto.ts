@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsDateString, IsEnum, IsOptional, Length } from 'class-validator';
+import {
+  IsString,
+  IsDateString,
+  IsEnum,
+  IsOptional,
+  Length,
+} from 'class-validator';
 import { EventVisibility } from '@prisma/client';
 
 export class CreateEventDto {
@@ -47,4 +53,3 @@ export class CreateEventDto {
   @IsOptional()
   visibility?: EventVisibility;
 }
-

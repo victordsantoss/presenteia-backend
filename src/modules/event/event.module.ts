@@ -26,4 +26,3 @@ import { CommonModule } from '../../common/common.module';
   exports: ['ICreateEventService', 'IGetEventService', 'IEventRepository'],
 })
 export class EventModule {}
-

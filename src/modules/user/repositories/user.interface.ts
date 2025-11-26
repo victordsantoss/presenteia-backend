@@ -3,6 +3,4 @@ import { User } from '@prisma/client';
 import { ICreateUserRequestDto } from '../dtos/create-user.request.dto';
 
 export interface IUserRepository
-  extends IBaseRepository<User, ICreateUserRequestDto> {
-
-}
+  extends IBaseRepository<User, ICreateUserRequestDto> {}

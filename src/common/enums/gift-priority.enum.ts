@@ -3,4 +3,3 @@ export enum GiftPriority {
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
 }
-

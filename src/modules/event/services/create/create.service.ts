@@ -20,7 +20,9 @@ export class CreateEventService implements ICreateEventService {
   ) {}
 
   async perform(eventData: CreateEventDto, userId: string): Promise<EventDto> {
-    this.logger.log(`Iniciando processo de criação de evento: ${eventData.title}`);
+    this.logger.log(
+      `Iniciando processo de criação de evento: ${eventData.title}`,
+    );
 
     const eventDate = new Date(eventData.eventDate);
     if (eventDate < new Date()) {
@@ -90,4 +92,3 @@ export class CreateEventService implements ICreateEventService {
     };
   }
 }
-

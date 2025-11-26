@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsEmail, IsBoolean, IsDate, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsBoolean,
+  IsDate,
+  IsOptional,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class UserResponseDto {

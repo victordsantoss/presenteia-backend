@@ -8,4 +8,3 @@ export enum ConnectionType {
   LOCAL = 'LOCAL',
   UNKNOWN = 'UNKNOWN',
 }
-

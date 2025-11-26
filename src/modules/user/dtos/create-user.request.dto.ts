@@ -28,4 +28,3 @@ export class ICreateUserRequestDto {
   @Length(8, 255)
   password: string;
 }
-
