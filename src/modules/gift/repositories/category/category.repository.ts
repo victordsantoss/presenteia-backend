@@ -12,4 +12,27 @@ export class CategoryRepository
   constructor(prisma: PrismaService) {
     super(prisma, 'category');
   }
+
+  async findCategoriesByEventId(
+    eventId: string,
+  ): Promise<Pick<Category, 'id' | 'name'>[]> {
+    return this.prisma.category.findMany({
+      where: {
+        isActive: true,
+        gifts: {
+          some: {
+            eventId,
+            isActive: true,
+          },
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
+  }
 }

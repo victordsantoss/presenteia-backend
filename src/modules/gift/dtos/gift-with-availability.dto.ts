@@ -49,6 +49,9 @@ export class GiftWithAvailabilityDto {
   @ApiProperty({ description: 'ID da categoria', required: false })
   categoryId?: string;
 
+  @ApiProperty({ description: 'Nome da categoria', required: false })
+  category?: string;
+
   @ApiProperty({ description: 'ID do evento' })
   eventId: string;
 
@@ -85,4 +88,5 @@ export class GiftWithAvailabilityDto {
   @ApiProperty({ description: 'Data de atualização' })
   updatedAt: Date;
 }
+
 

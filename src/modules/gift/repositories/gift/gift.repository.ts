@@ -13,13 +13,19 @@ export class GiftRepository
     super(prisma, 'gift');
   }
 
-  async findAvailableByEventId(eventId: string): Promise<Gift[]> {
+  async findAvailableByEventId(eventId: string, categoryId?: string): Promise<Gift[]> {
     return this.prisma.gift.findMany({
       where: {
         eventId,
         isActive: true,
+        ...(categoryId && { categoryId }),
       },
       include: {
+        category: {
+          select: {
+            name: true,
+          },
+        },
         reservations: {
           where: {
             status: {

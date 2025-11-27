@@ -4,6 +4,7 @@ import { GiftRepository } from './repositories/gift/gift.repository';
 import { CategoryRepository } from './repositories/category/category.repository';
 import { CreateGiftService } from './services/create/create.service';
 import { ListGiftsByEventService } from './services/list-by-event/list-by-event.service';
+import { ListCategoriesByEventService } from './services/list-categories-by-event/list-categories-by-event.service';
 import { PrismaModule } from '../../database/database.module';
 import { CommonModule } from '../../common/common.module';
 import { EventModule } from '../event/event.module';
@@ -21,6 +22,10 @@ import { EventModule } from '../event/event.module';
       useClass: ListGiftsByEventService,
     },
     {
+      provide: 'IListCategoriesByEventService',
+      useClass: ListCategoriesByEventService,
+    },
+    {
       provide: 'IGiftRepository',
       useClass: GiftRepository,
     },
@@ -32,6 +37,7 @@ import { EventModule } from '../event/event.module';
   exports: [
     'ICreateGiftService',
     'IListGiftsByEventService',
+    'IListCategoriesByEventService',
     'IGiftRepository',
     'ICategoryRepository',
   ],

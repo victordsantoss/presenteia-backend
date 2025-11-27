@@ -2,4 +2,8 @@ import { IBaseRepository } from '../../../../common/repositories/base.repository
 import { Category, Prisma } from '@prisma/client';
 
 export interface ICategoryRepository
-  extends IBaseRepository<Category, Prisma.CategoryCreateInput> {}
+  extends IBaseRepository<Category, Prisma.CategoryCreateInput> {
+  findCategoriesByEventId(
+    eventId: string,
+  ): Promise<Pick<Category, 'id' | 'name'>[]>;
+}

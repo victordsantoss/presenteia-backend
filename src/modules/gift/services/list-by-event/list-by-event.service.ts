@@ -15,8 +15,8 @@ export class ListGiftsByEventService implements IListGiftsByEventService {
     private readonly eventRepository: IEventRepository,
   ) {}
 
-  async perform(eventId: string): Promise<GiftWithAvailabilityDto[]> {
-    this.logger.log(`Listando presentes do evento: ${eventId}`);
+  async perform(eventId: string, categoryId?: string): Promise<GiftWithAvailabilityDto[]> {
+    this.logger.log(`Listando presentes do evento: ${eventId}${categoryId ? ` - categoria: ${categoryId}` : ''}`);
 
     const event = await this.eventRepository.findById(eventId);
     if (!event) {
@@ -27,7 +27,7 @@ export class ListGiftsByEventService implements IListGiftsByEventService {
       throw new NotFoundException('Evento não está mais disponível');
     }
 
-    const gifts = await this.giftRepository.findAvailableByEventId(eventId);
+    const gifts = await this.giftRepository.findAvailableByEventId(eventId, categoryId);
 
     return gifts.map((gift) => this.normalizeResponse(gift));
   }
@@ -74,6 +74,7 @@ export class ListGiftsByEventService implements IListGiftsByEventService {
       allowMultipleContributions: gift.allowMultipleContributions,
       priority: gift.priority,
       categoryId: gift.categoryId ?? undefined,
+      category: gift.category?.name ?? undefined,
       eventId: gift.eventId,
       isAvailable,
       reservedQuantity,
@@ -86,4 +87,5 @@ export class ListGiftsByEventService implements IListGiftsByEventService {
     };
   }
 }
+
 
