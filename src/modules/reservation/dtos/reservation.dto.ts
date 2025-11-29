@@ -20,7 +20,10 @@ export class ReservationDto {
   @ApiProperty({ description: 'Telefone do convidado', required: false })
   guestPhone?: string;
 
-  @ApiProperty({ description: 'Token de acesso para convidado', required: false })
+  @ApiProperty({
+    description: 'Token de acesso para convidado',
+    required: false,
+  })
   guestToken?: string;
 
   @ApiProperty({ description: 'Valor da contribuição' })
@@ -41,4 +44,3 @@ export class ReservationDto {
   @ApiProperty({ description: 'Data de entrega', required: false })
   deliveredAt?: Date;
 }
-

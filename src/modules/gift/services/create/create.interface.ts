@@ -1,6 +1,11 @@
-import type { CreateGiftDto } from '../../dtos/create-gift.dto';
-import type { GiftDto } from '../../dtos/gift.dto';
+import type {
+  CreateGiftRequestDto,
+  CreateGiftResponseDto,
+} from '../../dtos/create-gift.dto';
 
 export interface ICreateGiftService {
-  perform(giftData: CreateGiftDto, eventId: string): Promise<GiftDto>;
+  perform(
+    giftData: CreateGiftRequestDto,
+    eventId: string,
+  ): Promise<CreateGiftResponseDto>;
 }

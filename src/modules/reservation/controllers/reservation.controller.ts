@@ -1,17 +1,5 @@
-import {
-  Body,
-  Controller,
-  Inject,
-  Param,
-  Post,
-  Request,
-} from '@nestjs/common';
-import {
-  ApiBody,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Body, Controller, Inject, Param, Post, Request } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateReservationDto } from '../dtos/create-reservation.dto';
 import { ReservationDto } from '../dtos/reservation.dto';
 import type { ICreateReservationService } from '../services/create/create.interface';
@@ -50,4 +38,3 @@ export class ReservationController {
     );
   }
 }
-

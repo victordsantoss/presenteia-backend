@@ -1,10 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsOptional, Min, Length, IsEmail } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  Min,
+  Length,
+  IsEmail,
+} from 'class-validator';
 
 export class CreateReservationDto {
   @ApiProperty({
     description: 'Valor da contribuição',
-    example: 150.00,
+    example: 150.0,
   })
   @IsNumber()
   @Min(0.01)
@@ -47,4 +54,3 @@ export class CreateReservationDto {
   @IsOptional()
   guestPhone?: string;
 }
-

@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class UserResponseDto {
+export class GetUserResponseDto {
   @ApiProperty({
     description: 'ID do usuário',
     example: 'cm3xk2lqh0000uw8qz5j5z5j5',
@@ -107,8 +107,8 @@ export class GetAuthenticatedUserResponseDto {
 
   @ApiProperty({
     description: 'Dados do usuário autenticado',
-    type: UserResponseDto,
+    type: GetUserResponseDto,
   })
-  @Type(() => UserResponseDto)
-  user: UserResponseDto;
+  @Type(() => GetUserResponseDto)
+  user: GetUserResponseDto;
 }

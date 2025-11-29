@@ -1,7 +1,11 @@
-import type { GiftWithAvailabilityDto } from '../../dtos/gift-with-availability.dto';
+import type {
+  ListGiftsByEventRequestDto,
+  ListGiftsByEventResponseDto,
+} from '../../dtos/list-gifts-by-event.dto';
 
 export interface IListGiftsByEventService {
-  perform(eventId: string, categoryId?: string): Promise<GiftWithAvailabilityDto[]>;
+  perform(
+    eventId: string,
+    filters: ListGiftsByEventRequestDto,
+  ): Promise<ListGiftsByEventResponseDto>;
 }
-
-

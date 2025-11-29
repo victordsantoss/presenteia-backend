@@ -22,4 +22,3 @@ import { GiftModule } from '../gift/gift.module';
   exports: ['ICreateReservationService', 'IReservationRepository'],
 })
 export class ReservationModule {}
-

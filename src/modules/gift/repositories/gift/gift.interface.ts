@@ -4,4 +4,5 @@ import { Gift, Prisma } from '@prisma/client';
 export interface IGiftRepository
   extends IBaseRepository<Gift, Prisma.GiftCreateInput> {
   findAvailableByEventId(eventId: string, categoryId?: string): Promise<Gift[]>;
+  findByIdWithLinks(id: string): Promise<Gift | null>;
 }

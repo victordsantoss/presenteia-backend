@@ -14,7 +14,7 @@ import {
   ApiOperation,
   ApiResponse,
 } from '@nestjs/swagger';
-import { LoginRequestDto } from '../dtos/login.request.dto';
+import { LoginRequestDto } from '../dtos/login.dto';
 import type { IAuthService } from '../services/auth/auth.interface';
 import { JwtAuthGuard } from '../../../common/guards/auth.guard';
 import type { IAuthenticatedUserRequestDto } from '../../../common/dtos/auth.request.dto';

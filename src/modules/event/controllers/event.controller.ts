@@ -15,7 +15,7 @@ import {
   ApiTags,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { CreateEventDto } from '../dtos/create-event.dto';
+import { CreateEventRequestDto } from '../dtos/create-event.dto';
 import { EventDto } from '../dtos/event.dto';
 import type { ICreateEventService } from '../services/create/create.interface';
 import type { IGetEventService } from '../services/get/get.interface';
@@ -43,11 +43,11 @@ export class EventController {
   @ApiResponse({ status: 400, description: 'Erro de validação.' })
   @ApiResponse({ status: 401, description: 'Não autorizado.' })
   @ApiBody({
-    type: CreateEventDto,
+    type: CreateEventRequestDto,
     description: 'Dados de criação do evento',
   })
   async create(
-    @Body() eventData: CreateEventDto,
+    @Body() eventData: CreateEventRequestDto,
     @Request() req: any,
   ): Promise<EventDto> {
     const userId = req.user.id;

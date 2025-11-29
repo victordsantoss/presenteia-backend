@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { GiftPriority } from '@prisma/client';
+import { GiftLinkDto } from './gift-link.dto';
 
 export class GiftDto {
   @ApiProperty({
@@ -24,8 +25,9 @@ export class GiftDto {
   @ApiProperty({
     description: 'Preço do presente',
     example: 299.9,
+    required: false,
   })
-  price: number;
+  price?: number;
 
   @ApiProperty({
     description: 'Quantidade disponível',
@@ -90,4 +92,11 @@ export class GiftDto {
     required: false,
   })
   deletedAt?: Date;
+
+  @ApiProperty({
+    description: 'Links de sugestão do presente',
+    type: [GiftLinkDto],
+    required: false,
+  })
+  links?: GiftLinkDto[];
 }

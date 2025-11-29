@@ -67,9 +67,8 @@ export class CreateReservationService implements ICreateReservationService {
       }),
     };
 
-    const createdReservation = await this.reservationRepository.create(
-      reservationPayload,
-    );
+    const createdReservation =
+      await this.reservationRepository.create(reservationPayload);
 
     this.logger.log(`Reserva criada com sucesso: ${createdReservation.id}`);
 
@@ -130,4 +129,3 @@ export class CreateReservationService implements ICreateReservationService {
     };
   }
 }
-

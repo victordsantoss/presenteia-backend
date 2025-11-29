@@ -18,9 +18,14 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/common/guards/auth.guard';
-import { CreateGiftDto } from '../dtos/create-gift.dto';
-import { GiftDto } from '../dtos/gift.dto';
-import { GiftWithAvailabilityDto } from '../dtos/gift-with-availability.dto';
+import {
+  CreateGiftRequestDto,
+  CreateGiftResponseDto,
+} from '../dtos/create-gift.dto';
+import {
+  ListGiftsByEventRequestDto,
+  ListGiftsByEventResponseDto,
+} from '../dtos/list-gifts-by-event.dto';
 import { CategoryDto } from '../dtos/category.dto';
 import type { ICreateGiftService } from '../services/create/create.interface';
 import type { IListGiftsByEventService } from '../services/list-by-event/list-by-event.interface';
@@ -45,42 +50,36 @@ export class GiftController {
   @ApiResponse({
     status: 201,
     description: 'Presente criado com sucesso.',
-    type: GiftDto,
+    type: CreateGiftResponseDto,
   })
   @ApiResponse({ status: 400, description: 'Erro de validação.' })
   @ApiResponse({ status: 401, description: 'Não autorizado.' })
   @ApiResponse({ status: 404, description: 'Evento não encontrado.' })
   @ApiBody({
-    type: CreateGiftDto,
+    type: CreateGiftRequestDto,
     description: 'Dados do presente',
   })
   async create(
-    @Body() giftData: CreateGiftDto,
+    @Body() giftData: CreateGiftRequestDto,
     @Param('eventId') eventId: string,
     @Request() req: any,
-  ): Promise<GiftDto> {
+  ): Promise<CreateGiftResponseDto> {
     return await this.createGiftService.perform(giftData, eventId);
   }
 
   @Get('events/:eventId')
   @ApiOperation({ summary: 'Listar presentes do evento com disponibilidade' })
-  @ApiQuery({
-    name: 'categoryId',
-    required: false,
-    description: 'ID da categoria para filtrar presentes',
-    type: String,
-  })
   @ApiResponse({
     status: 200,
-    description: 'Lista de presentes com informações de disponibilidade.',
-    type: [GiftWithAvailabilityDto],
+    description: 'Lista paginada de presentes com informações de disponibilidade.',
+    type: ListGiftsByEventResponseDto,
   })
   @ApiResponse({ status: 404, description: 'Evento não encontrado.' })
   async listByEvent(
     @Param('eventId') eventId: string,
-    @Query('categoryId') categoryId?: string,
-  ): Promise<GiftWithAvailabilityDto[]> {
-    return await this.listGiftsByEventService.perform(eventId, categoryId);
+    @Query() filters: ListGiftsByEventRequestDto,
+  ): Promise<ListGiftsByEventResponseDto> {
+    return await this.listGiftsByEventService.perform(eventId, filters);
   }
 
   @Get('events/:eventId/categories')
@@ -99,4 +98,3 @@ export class GiftController {
     return await this.listCategoriesByEventService.perform(eventId);
   }
 }
-

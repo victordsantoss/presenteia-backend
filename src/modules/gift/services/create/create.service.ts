@@ -6,11 +6,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import type { ICreateGiftService } from './create.interface';
-import type { CreateGiftDto } from '../../dtos/create-gift.dto';
-import type { GiftDto } from '../../dtos/gift.dto';
+import type {
+  CreateGiftRequestDto,
+  CreateGiftResponseDto,
+} from '../../dtos/create-gift.dto';
 import type { IGiftRepository } from '../../repositories/gift/gift.interface';
 import type { ICategoryRepository } from '../../repositories/category/category.interface';
-import { Gift, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class CreateGiftService implements ICreateGiftService {
@@ -23,7 +25,10 @@ export class CreateGiftService implements ICreateGiftService {
     private readonly categoryRepository: ICategoryRepository,
   ) {}
 
-  async perform(giftData: CreateGiftDto, eventId: string): Promise<GiftDto> {
+  async perform(
+    giftData: CreateGiftRequestDto,
+    eventId: string,
+  ): Promise<CreateGiftResponseDto> {
     this.logger.log(
       `Iniciando processo de criação de presente: ${giftData.name}`,
     );
@@ -41,7 +46,7 @@ export class CreateGiftService implements ICreateGiftService {
       throw new BadRequestException('A quantidade deve ser no mínimo 1');
     }
 
-    if (giftData.price < 0) {
+    if (giftData.price && giftData.price < 0) {
       throw new BadRequestException('O preço não pode ser negativo');
     }
 
@@ -61,20 +66,31 @@ export class CreateGiftService implements ICreateGiftService {
           connect: { id: giftData.categoryId },
         },
       }),
+      ...(giftData.links &&
+        giftData.links.length > 0 && {
+          links: {
+            create: giftData.links.map((url) => ({ url })),
+          },
+        }),
     };
 
     const createdGift = await this.giftRepository.create(giftPayload);
 
-    return this.normalizeResponse(createdGift);
+    // Buscar o presente criado com os links incluídos
+    const giftWithLinks = await this.giftRepository.findByIdWithLinks(
+      createdGift.id,
+    );
+
+    return this.normalizeResponse(giftWithLinks);
   }
 
-  private normalizeResponse(gift: Gift): GiftDto {
+  private normalizeResponse(gift: any): CreateGiftResponseDto {
     this.logger.log(`Normalizando resposta do presente: ${gift.name}`);
     return {
       id: gift.id,
       name: gift.name,
       description: gift.description ?? undefined,
-      price: Number(gift.price),
+      price: gift.price ? Number(gift.price) : undefined,
       quantity: gift.quantity,
       imageUrl: gift.imageUrl ?? undefined,
       allowMultipleContributions: gift.allowMultipleContributions,
@@ -83,8 +99,9 @@ export class CreateGiftService implements ICreateGiftService {
       eventId: gift.eventId,
       isActive: gift.isActive,
       createdAt: gift.createdAt,
-      updatedAt: gift.updatedAt,
-      deletedAt: gift.deletedAt ?? undefined,
+      links: gift.links?.map((link: any) => ({
+        url: link.url,
+      })),
     };
   }
 }

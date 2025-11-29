@@ -13,7 +13,10 @@ export class GiftRepository
     super(prisma, 'gift');
   }
 
-  async findAvailableByEventId(eventId: string, categoryId?: string): Promise<Gift[]> {
+  async findAvailableByEventId(
+    eventId: string,
+    categoryId?: string,
+  ): Promise<Gift[]> {
     return this.prisma.gift.findMany({
       where: {
         eventId,
@@ -24,6 +27,11 @@ export class GiftRepository
         category: {
           select: {
             name: true,
+          },
+        },
+        links: {
+          orderBy: {
+            createdAt: 'asc',
           },
         },
         reservations: {
@@ -42,6 +50,19 @@ export class GiftRepository
         },
       },
       orderBy: [{ priority: 'desc' }, { createdAt: 'asc' }],
+    });
+  }
+
+  async findByIdWithLinks(id: string): Promise<Gift | null> {
+    return this.prisma.gift.findUnique({
+      where: { id },
+      include: {
+        links: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
+      },
     });
   }
 }

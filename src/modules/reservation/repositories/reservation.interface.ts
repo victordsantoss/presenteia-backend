@@ -7,4 +7,3 @@ export interface IReservationRepository
   findByUserId(userId: string): Promise<Reservation[]>;
   findByGuestToken(token: string): Promise<Reservation | null>;
 }
-

@@ -8,4 +8,3 @@ export interface ICreateReservationService {
     userId?: string,
   ): Promise<ReservationDto>;
 }
-

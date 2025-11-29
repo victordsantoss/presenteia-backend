@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { EventVisibility } from '@prisma/client';
 
-export class CreateEventDto {
+export class CreateEventRequestDto {
   @ApiProperty({
     description: 'Título do evento',
     example: 'Chá de Casa Nova',

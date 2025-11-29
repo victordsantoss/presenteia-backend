@@ -5,7 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import type { ICreateEventService } from './create/create.interface';
-import type { CreateEventDto } from '../dtos/create-event.dto';
+import type { CreateEventRequestDto } from '../dtos/create-event.dto';
 import type { EventDto } from '../dtos/event.dto';
 import type { IEventRepository } from '../repositories/event.interface';
 import { Event, Prisma } from '@prisma/client';
@@ -19,7 +19,10 @@ export class CreateEventService implements ICreateEventService {
     private readonly eventRepository: IEventRepository,
   ) {}
 
-  async perform(eventData: CreateEventDto, userId: string): Promise<EventDto> {
+  async perform(
+    eventData: CreateEventRequestDto,
+    userId: string,
+  ): Promise<EventDto> {
     this.logger.log(
       `Iniciando processo de criação de evento: ${eventData.title}`,
     );

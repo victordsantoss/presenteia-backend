@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { GiftPriority } from '@prisma/client';
+import { GiftLinkDto } from './gift-link.dto';
 
 export class ReservationInfoDto {
   @ApiProperty({
@@ -16,9 +17,10 @@ export class ReservationInfoDto {
 
   @ApiProperty({
     description: 'Valor da contribuição',
-    example: 150.00,
+    example: 150.0,
+    required: false,
   })
-  contributionAmount: number;
+  contributionAmount?: number;
 }
 
 export class GiftWithAvailabilityDto {
@@ -31,8 +33,8 @@ export class GiftWithAvailabilityDto {
   @ApiProperty({ description: 'Descrição do presente', required: false })
   description?: string;
 
-  @ApiProperty({ description: 'Preço do presente' })
-  price: number;
+  @ApiProperty({ description: 'Preço do presente', required: false })
+  price?: number;
 
   @ApiProperty({ description: 'Quantidade total' })
   quantity: number;
@@ -66,13 +68,13 @@ export class GiftWithAvailabilityDto {
 
   @ApiProperty({
     description: 'Valor total arrecadado (para vaquinha)',
-    example: 3500.00,
+    example: 3500.0,
   })
   totalContributed: number;
 
   @ApiProperty({
     description: 'Valor restante (para vaquinha)',
-    example: 1500.00,
+    example: 1500.0,
   })
   remainingAmount: number;
 
@@ -87,6 +89,11 @@ export class GiftWithAvailabilityDto {
 
   @ApiProperty({ description: 'Data de atualização' })
   updatedAt: Date;
+
+  @ApiProperty({
+    description: 'Links de sugestão do presente',
+    type: [GiftLinkDto],
+    required: false,
+  })
+  links?: GiftLinkDto[];
 }
-
-
