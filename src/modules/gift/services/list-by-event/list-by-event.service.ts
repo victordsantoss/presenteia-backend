@@ -47,15 +47,19 @@ export class ListGiftsByEventService implements IListGiftsByEventService {
       throw new NotFoundException('Evento não está mais disponível');
     }
 
-    const gifts = await this.giftRepository.findAvailableByEventId(
+    // Buscar presentes com filtros aplicados no banco de dados
+    const gifts = await this.giftRepository.findWithFilters({
       eventId,
       categoryId,
-    );
+      search,
+      orderBy,
+      sortBy,
+    });
 
-    // Normalizar e aplicar filtros
+    // Normalizar respostas
     let normalizedGifts = gifts.map((gift) => this.normalizeResponse(gift));
 
-    // Filtrar por status de disponibilidade
+    // Filtrar por status de disponibilidade (feito em memória pois depende de cálculos)
     if (status !== GiftAvailabilityStatus.ALL) {
       normalizedGifts = normalizedGifts.filter((gift) => {
         if (status === GiftAvailabilityStatus.AVAILABLE) {
@@ -67,20 +71,6 @@ export class ListGiftsByEventService implements IListGiftsByEventService {
         return true;
       });
     }
-
-    // Filtrar por busca de texto
-    if (search) {
-      const searchLower = search.toLowerCase();
-      normalizedGifts = normalizedGifts.filter(
-        (gift) =>
-          gift.name.toLowerCase().includes(searchLower) ||
-          gift.description?.toLowerCase().includes(searchLower) ||
-          gift.category?.toLowerCase().includes(searchLower),
-      );
-    }
-
-    // Ordenar
-    normalizedGifts = this.sortGifts(normalizedGifts, orderBy, sortBy);
 
     // Calcular total antes da paginação
     const total = normalizedGifts.length;
@@ -100,50 +90,6 @@ export class ListGiftsByEventService implements IListGiftsByEventService {
         totalPages,
       },
     };
-  }
-
-  private sortGifts(
-    gifts: GiftWithAvailabilityDto[],
-    orderBy: string,
-    sortBy: 'ASC' | 'DESC',
-  ): GiftWithAvailabilityDto[] {
-    const sorted = [...gifts];
-
-    sorted.sort((a, b) => {
-      let aValue: any;
-      let bValue: any;
-
-      switch (orderBy) {
-        case 'priority':
-          const priorityOrder = { HIGH: 3, MEDIUM: 2, LOW: 1 };
-          aValue = priorityOrder[a.priority];
-          bValue = priorityOrder[b.priority];
-          break;
-        case 'name':
-          aValue = a.name;
-          bValue = b.name;
-          break;
-        case 'price':
-          aValue = a.price || 0;
-          bValue = b.price || 0;
-          break;
-        case 'createdAt':
-          aValue = new Date(a.createdAt).getTime();
-          bValue = new Date(b.createdAt).getTime();
-          break;
-        default:
-          aValue = a.createdAt;
-          bValue = b.createdAt;
-      }
-
-      if (sortBy === 'ASC') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
-    });
-
-    return sorted;
   }
 
   private normalizeResponse(gift: any): GiftWithAvailabilityDto {
